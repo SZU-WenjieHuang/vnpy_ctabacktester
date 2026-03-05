@@ -1231,12 +1231,23 @@ class CandleChartDialog(QtWidgets.QDialog):
         self.setWindowTitle(_("回测K线图表"))
         self.resize(1400, 800)
 
+        # Import custom indicator items
+        import sys
+        import os
+        _vnpy_dir = os.path.expanduser("~/Documents/Quant/Freedom/FreedomStrategy/30-VNPY")
+        if _vnpy_dir not in sys.path:
+            sys.path.insert(0, _vnpy_dir)
+        from chart_items import DonchianItem, AtrItem
+
         # Create chart widget
         self.chart: ChartWidget = ChartWidget()
         self.chart.add_plot("candle", hide_x_axis=True)
-        self.chart.add_plot("volume", maximum_height=200)
+        self.chart.add_plot("volume", maximum_height=150)
+        self.chart.add_plot("atr", maximum_height=150)
         self.chart.add_item(CandleItem, "candle", "candle")
+        self.chart.add_item(DonchianItem, "donchian", "candle")
         self.chart.add_item(VolumeItem, "volume", "volume")
+        self.chart.add_item(AtrItem, "atr", "atr")
         self.chart.add_cursor()
 
         # Create help widget
