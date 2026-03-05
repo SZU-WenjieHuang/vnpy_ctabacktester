@@ -816,6 +816,9 @@ class BacktesterChart(pg.GraphicsLayoutWidget):
         for n, date in enumerate(df.index):
             self.dates[n] = date
 
+        # reset_index 将 DatetimeIndex 转为整数索引，避免 pyqtgraph 用 obj[0] 取值时报 KeyError
+        df = df.reset_index(drop=True)
+
         # Set data for curve of balance and drawdown
         self.balance_curve.setData(df["balance"])
         self.drawdown_curve.setData(df["drawdown"])
